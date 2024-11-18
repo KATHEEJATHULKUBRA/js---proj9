@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun-spot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            position: relative;
+            overflow: hidden;
+            height: 100vh;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            position: relative;
+            z-index: 10;
+            height: 80px;
+        }
+        .navbar .left, .navbar .right {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .left button, .navbar .right button {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .navbar .right img {
+            height: 40px;
+        }
+        .logo {
+            height: 180px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        #bgVideo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+        .control-buttons {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 11;
+            display: flex;
+            gap: 20px;
+        }
+        .control-buttons button {
+            padding: 15px 25px;
+            font-size: 18px;
+            color: #fff;
+            background-color: rgba(51, 51, 51, 0.8);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .control-buttons button:hover {
+            background-color: rgba(51, 51, 51, 1);
+        }
+        .modeSwitch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <video id="bgVideo" autoplay muted loop>
+        <source src="/bg-light.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <!-- Background Audio -->
+    <audio id="bgAudio" loop>
+        <source src="/music.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <nav class="navbar">
+        <img src="/logo-fun.png" alt="Logo" class="logo">
+        <div class="right">
+            <button id="soundBtn">🔊 Sound On</button>
+        </div>
+        <button id="modeSwitch" class="modeSwitch">🌞</button>
+    </nav>
+
+    <div class="control-buttons">
+        <a href="select.html"><button id="playBtn">▶️ Play</button></a>
+        <button id="exitBtn">❌ Exit</button>
+    </div>
+
+    <script>
+        const bgVideo = document.getElementById('bgVideo');
+        const bgAudio = document.getElementById('bgAudio');
+        const modeSwitch = document.getElementById('modeSwitch');
+        const playBtn = document.getElementById('playBtn');
+        const exitBtn = document.getElementById('exitBtn');
+        const soundBtn = document.getElementById('soundBtn');
+
+        // Function to check and set sound state from localStorage
+        const setSoundState = () => {
+            const soundState = localStorage.getItem('soundState');
+            if (soundState === 'off') {
+                bgVideo.muted = true;
+                bgAudio.pause();
+                soundBtn.textContent = '🔊 Sound On';
+            } else {
+                bgVideo.muted = false;
+                bgAudio.play();
+                soundBtn.textContent = '🔇 Sound Off';
+            }
+        };
+
+        // Set the initial sound state based on localStorage
+        setSoundState();
+
+        // Toggle Dark Mode
+        modeSwitch.addEventListener('click', () => {
+            const isDarkMode = document.body.classList.toggle('dark-mode');
+            modeSwitch.textContent = isDarkMode ? '🌙' : '🌞';
+            bgVideo.src = isDarkMode ? '/bg-dark.mp4' : '/bg-light.mp4';
+            bgVideo.load();
+        });
+
+        // Toggle Sound (Video & Audio) and save state to localStorage
+        soundBtn.addEventListener('click', () => {
+            if (bgVideo.muted && bgAudio.paused) {
+                bgVideo.muted = false;
+                bgAudio.play();
+                soundBtn.textContent = '🔇 Sound Off';
+                localStorage.setItem('soundState', 'on');
+            } else {
+                bgVideo.muted = true;
+                bgAudio.pause();
+                soundBtn.textContent = '🔊 Sound On';
+                localStorage.setItem('soundState', 'off');
+            }
+        });
+
+        // Play Button
+        playBtn.addEventListener('click', () => {
+            bgVideo.play();
+        });
+
+        // Exit Button
+        exitBtn.addEventListener('click', () => {
+            const confirmation = confirm("Are you sure you want to exit the page?");
+            if (confirmation) {
+                window.close();
+                alert("If the window did not close, please close it manually.");
+            }
+        });
+    </script>
+</body>
+</html>

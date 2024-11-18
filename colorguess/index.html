@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>color-guess</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .menu-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .menu-button:hover {
+            background-color: #555;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            position: fixed;
+    width: -webkit-fill-available;
+        }
+
+        .navbar .logo {
+            height: 40px;
+        }
+
+        .navbar .right {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar button {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .navbar button:hover {
+            background-color: #555;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <img src="/logo-fun.png" alt="Logo" class="logo">
+        <div class="right">
+            <button id="soundBtn">🔊 Sound On</button>
+        </div>
+        <button id="modeSwitch"  style="display: none;" class="modeSwitch">🌞</button>
+    </nav>
+
+    <a href="/select.html" class="menu-button">Menu</a>
+    <h1>The RGB Color Guessing Game
+        <br> 
+        <span id="colorDisplay">RGB</span>
+    </h1>
+    
+    <div id="stripe">
+        <button id="reset">New Colors</button>
+        <span id="message"></span>
+        <button id="easyButton">Easy</button>
+        <button id="hardButton" class="selected">Hard</button>
+    </div>
+
+    <div id="container">
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+    </div>
+<!-- Background Audio -->
+<audio id="bgAudio" loop>
+    <source src="/music.mp3" type="audio/mp3">
+    Your browser does not support the audio tag.
+</audio>
+
+<script>
+// Sound control button and audio element
+const soundBtn = document.getElementById('soundBtn');
+const bgAudio = document.getElementById('bgAudio');
+
+// Check for sound state in localStorage
+const setSoundState = () => {
+    const soundState = localStorage.getItem('soundState');
+    if (soundState === 'off') {
+        bgAudio.pause();
+        soundBtn.textContent = '🔊 ';
+    } else {
+        bgAudio.play();
+        soundBtn.textContent = '🔇 ';
+    }
+};
+
+// Set initial sound state
+setSoundState();
+
+// Toggle sound on button click and save state
+soundBtn.addEventListener('click', () => {
+    if (bgAudio.paused) {
+        bgAudio.play();
+        soundBtn.textContent = '🔇';
+        localStorage.setItem('soundState', 'on');
+    } else {
+        bgAudio.pause();
+        soundBtn.textContent = '🔊 ';
+        localStorage.setItem('soundState', 'off');
+    }
+});
+</script>
+
+
+    <script src="script.js"></script>
+</body>
+</html>

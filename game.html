@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Navbar with Background Video</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            position: relative;
+            overflow: hidden;
+            height: 100vh;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            position: relative;
+            z-index: 10;
+            height: 80px;
+        }
+        .navbar .left, .navbar .right {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .left button, .navbar .right button {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .navbar .right img {
+            height: 40px;
+        }
+        .logo {
+            height: 40px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        #bgVideo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+        .control-buttons {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 11;
+            display: flex;
+            gap: 20px;
+        }
+        .control-buttons button {
+            padding: 15px 25px;
+            font-size: 18px;
+            color: #fff;
+            background-color: rgba(51, 51, 51, 0.8);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .control-buttons button:hover {
+            background-color: rgba(51, 51, 51, 1);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            border-radius: 5px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <video id="bgVideo" autoplay muted loop>
+        <source src="light-background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <nav class="navbar">
+        <div class="left">
+            <button id="loginBtn">Login</button>
+            <span id="userName" style="display: none; margin-left: 10px; color: #fff;"></span>
+        </div>
+        <img src="logo.png" alt="Logo" class="logo">
+        <div class="right">
+            <button id="soundBtn">🔊 Sound On</button>
+            <button id="modeSwitch">🌞</button>
+        </div>
+    </nav>
+
+    <div class="control-buttons">
+        <button id="playBtn">▶️ Play</button>
+        <button id="exitBtn">❌ Exit</button>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Sign Up</h2>
+            <form id="authForm">
+                <input type="text" placeholder="Username" required>
+                <input type="email" placeholder="Email" required id="emailInput" style="display: block;">
+                <input type="password" placeholder="Password" required>
+                <button type="submit" id="submitBtn">Sign Up</button>
+            </form>
+            <p id="toggleText">Already have an account? <button id="toggleFormBtn">Login</button></p>
+        </div>
+    </div>
+
+    <script>
+        const bgVideo = document.getElementById('bgVideo');
+        const modeSwitch = document.getElementById('modeSwitch');
+        const playBtn = document.getElementById('playBtn');
+        const exitBtn = document.getElementById('exitBtn');
+
+        const modal = document.getElementById("myModal");
+        const loginBtn = document.getElementById("loginBtn");
+        const closeModal = document.getElementsByClassName("close")[0];
+        const userNameDisplay = document.getElementById('userName');
+        const authForm = document.getElementById('authForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const modalTitle = document.getElementById('modalTitle');
+        const emailInput = document.getElementById('emailInput');
+        const toggleText = document.getElementById('toggleText');
+        const toggleFormBtn = document.getElementById('toggleFormBtn');
+
+        loginBtn.onclick = function() {
+            modal.style.display = "block";
+            modalTitle.textContent = "Sign Up";
+            emailInput.style.display = "block";
+            submitBtn.textContent = "Sign Up";
+            toggleText.textContent = "Already have an account? ";
+        }
+
+        closeModal.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        modeSwitch.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            modeSwitch.textContent = document.body.classList.contains('dark-mode') ? '🌙' : '🌞';
+        });
+
+        const soundBtn = document.getElementById('soundBtn');
+        soundBtn.addEventListener('click', () => {
+            if (bgVideo.muted) {
+                bgVideo.muted = false;
+                soundBtn.textContent = '🔇 Sound Off';
+            } else {
+                bgVideo.muted = true;
+                soundBtn.textContent = '🔊 Sound On';
+            }
+        });
+
+        playBtn.addEventListener('click', () => {
+            bgVideo.play();
+        });
+
+        exitBtn.addEventListener('click', () => {
+            const confirmation = confirm("Are you sure you want to exit the page?");
+            if (confirmation) {
+                window.open('', '_self'); // Opens a blank page in the current tab
+                window.close(); // Attempt to close the current page
+            }
+        });
+
+        toggleFormBtn.addEventListener('click', () => {
+            if (modalTitle.textContent === "Sign Up") {
+                modalTitle.textContent = "Login";
+                emailInput.style.display = "none";
+                submitBtn.textContent = "Login";
+                toggleText.innerHTML = "Don't have an account? <button id='toggleFormBtn'>Sign Up</button>";
+            } else {
+                modalTitle.textContent = "Sign Up";
+                emailInput.style.display = "block";
+                submitBtn.textContent = "Sign Up";
+                toggleText.innerHTML = "Already have an account? <button id='toggleFormBtn'>Login</button>";
+            }
+        });
+
+        authForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const username = authForm[0].value;
+            userNameDisplay.textContent = `Welcome, ${username}!`;
+            userNameDisplay.style.display = "block";
+            modal.style.display = "none";
+        });
+    </script>
+</body>
+</html>

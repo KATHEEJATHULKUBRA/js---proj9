@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Guess a Word Game JavaScript</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .menu-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .menu-button:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <a href="/select.html" class="menu-button">Menu</a>
+
+  <video id="background-video" autoplay loop muted>
+    <source src="memogame.html/IMAGES/bf03357633894926afd3dc6d00182260_preview.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="wrapper">
+    <h1>Guess the Word</h1>
+    <div class="content">
+      <input type="text" class="typing-input" maxlength="1">
+      <div class="inputs"></div>
+      <div class="details">
+        <p class="hint">Hint: <span></span></p>
+        <p class="guess-left">Remaining guesses: <span></span></p>
+        <p class="wrong-letter">Wrong letters: <span></span></p>
+      </div>
+      <button class="reset-btn">Reset Game</button>
+    </div>
+  </div>
+  
+
+  <script src="js/words.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

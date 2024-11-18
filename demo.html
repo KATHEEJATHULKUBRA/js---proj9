@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Memory Card Game</h1>
+        <button id="startGameBtn">Start Game</button>
+    </div>
+
+    <script>
+        function setupGame(moves, pairs, cardsArray) {
+            // Assigning moves to movesRemaining
+            let movesRemaining = moves;
+
+            // Creating the game grid
+            let gameGrid = cardsArray.slice(0, pairs)
+                .concat(cardsArray.slice(0, pairs))
+                .sort(() => 0.5 - Math.random());
+
+            // Displaying the results in alerts
+            alert("Moves Remaining: " + movesRemaining);
+            alert("Game Grid: " + gameGrid.join(', ')); // Using join to format the array nicely
+        }
+
+        // Event listener for the button
+        document.getElementById('startGameBtn').addEventListener('click', function() {
+            let moves = 10; // Example number of moves
+            let pairs = 3; // Example number of pairs
+            let cardsArray = ['A', 'B', 'C', 'D', 'E', 'F']; // Example cards
+
+            setupGame(moves, pairs, cardsArray);
+        });
+    </script>
+</body>
+</html>
